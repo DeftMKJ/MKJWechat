@@ -1,0 +1,12 @@
+platform:ios,"8.0"
+target 'MKJWechat' do
+pod 'Reveal-iOS-SDK', :configurations => ['Debug']
+pod 'Masonry'
+pod 'YYKit'
+pod 'MJRefresh'
+pod 'SDWebImage'
+pod 'InAppSettingsKit'
+pod 'MJExtension'
+pod 'UITableView+FDTemplateLayoutCell'
+end
+

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CommentImageCollectionViewCell" id="gTV-IL-0wX" customClass="CommentImageCollectionViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="120" height="111"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="120" height="111"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bkz-TQ-QLX">
+                        <rect key="frame" x="0.0" y="0.0" width="120" height="111"/>
+                    </imageView>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="Bkz-TQ-QLX" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="1Rr-Yj-nfj"/>
+                <constraint firstAttribute="trailing" secondItem="Bkz-TQ-QLX" secondAttribute="trailing" id="1XN-Pq-oqA"/>
+                <constraint firstAttribute="bottom" secondItem="Bkz-TQ-QLX" secondAttribute="bottom" id="Ey0-SF-sVB"/>
+                <constraint firstItem="Bkz-TQ-QLX" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="xDr-1q-MhZ"/>
+            </constraints>
+            <size key="customSize" width="120" height="111"/>
+            <connections>
+                <outlet property="mainImageView" destination="Bkz-TQ-QLX" id="XfD-Wg-58s"/>
+            </connections>
+            <point key="canvasLocation" x="-126" y="19"/>
+        </collectionViewCell>
+    </objects>
+</document>
