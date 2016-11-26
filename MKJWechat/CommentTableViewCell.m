@@ -13,6 +13,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    self.commentLabel.preferredMaxLayoutWidth = SCREEN_WIDTH - 90;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

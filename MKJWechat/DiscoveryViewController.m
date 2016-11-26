@@ -13,6 +13,7 @@
 #import "MKJRequestHelp.h"
 #import <UIImageView+WebCache.h>
 #import <UITableView+FDTemplateLayoutCell.h>
+#import "NSArray+CP.h"
 
 @interface DiscoveryViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -28,6 +29,7 @@ static NSString *identify = @"MKJFriendTableViewCell";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self.tableView registerNib:[UINib nibWithNibName:identify bundle:nil] forCellReuseIdentifier:identify];
+    self.tableView.tableFooterView = [UIView new];
     
     MJRefreshNormalHeader *refreshHeader = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(requestData)];
     refreshHeader.stateLabel.hidden = YES;
@@ -95,15 +97,43 @@ static NSString *identify = @"MKJFriendTableViewCell";
     // img
     cell.imageDatas = [[NSMutableArray alloc] initWithArray:issueInfo.messageSmallPics];
     [cell.collectionView reloadData];
-    cell.colletionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height;
+//    [cell.collectionView layoutIfNeeded];
+//    cell.colletionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height;
+    CGFloat width = SCREEN_WIDTH - 90 - 20;
+    if ([NSArray isEmpty:issueInfo.messageSmallPics])
+    {
+        cell.colletionViewHeight.constant = 0;
+    }
+    else
+    {
+        if (issueInfo.messageSmallPics.count == 1)
+        {
+            cell.colletionViewHeight.constant = width / 1.5;
+        }
+        else
+        {
+            cell.colletionViewHeight.constant = ((issueInfo.messageSmallPics.count - 1) / 3 + 1) * (width / 3) + (issueInfo.messageSmallPics.count - 1) / 3 * 10;
+        }
+    }
     
     // timeStamp
     cell.timeLabel.text = issueInfo.timeTag;
     
+    // right action button
+    cell.backPopViewWidth.constant = 0;
+    
     // commentTableView
     cell.commentdatas = [[NSMutableArray alloc] initWithArray:issueInfo.commentMessages];
     [cell.commentTableView reloadData];
-    cell.tableViewHeight.constant = cell.commentTableView.contentSize.height;
+    CGRect recHeight = CGRectZero;
+    if (![NSArray isEmpty:issueInfo.commentMessages])
+    {
+        recHeight = [cell.commentTableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:issueInfo.commentMessages.count - 1 inSection:0]];
+    }
+    
+    
+    cell.tableViewHeight.constant = recHeight.origin.y + recHeight.size.height;
+//    NSLog(@"%@,heightTable%f",indexpath,cell.tableViewHeight.constant);
 }
 
 
@@ -114,6 +144,12 @@ static NSString *identify = @"MKJFriendTableViewCell";
         [self configCell:cell indexpath:indexPath];
         
     }];
+    
+    
+//    return [tableView fd_heightForCellWithIdentifier:identify configuration:^(MKJFriendTableViewCell *cell) {
+//       
+//        [self configCell:cell indexpath:indexPath];
+//    }];
 }
 
 

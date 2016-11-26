@@ -27,14 +27,20 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    self.desLabel.preferredMaxLayoutWidth = SCREEN_WIDTH - 90;
+    self.nameLabel.preferredMaxLayoutWidth = SCREEN_WIDTH - 90;
+    self.timeLabel.preferredMaxLayoutWidth = SCREEN_WIDTH - 90;
+    
+    
     self.commentTableView.backgroundColor = [UIColor redColor];
     self.commentTableView.delegate = self;
     self.commentTableView.dataSource = self;
+    self.commentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     self.collectionView.backgroundColor = [UIColor greenColor];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    
+    self.collectionView.alwaysBounceVertical = YES;
     
     [self.commentTableView registerNib:[UINib nibWithNibName:identifyTable bundle:nil] forCellReuseIdentifier:identifyTable];
     [self.collectionView registerNib:[UINib nibWithNibName:identifyCollection bundle:nil] forCellWithReuseIdentifier:identifyCollection];
@@ -63,8 +69,9 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
     NSDictionary *normalDic = @{NSForegroundColorAttributeName : RGBA(51, 51, 51, 1),NSFontAttributeName : [UIFont systemFontOfSize:12]};
     NSMutableAttributedString *commentStr;
     NSAttributedString *contentStr = [[NSAttributedString alloc] initWithString:detail.commentText attributes:normalDic];
+//    NSLog(@"byUserName%@,byUserID%@",detail.commentByUserName,detail.commentByUserId);
     // 回复楼主
-    if ([NSString isEmptyString:detail.commentByUserName] && [NSString isEmptyString:detail.commentByUserId])
+    if ([NSString isEmptyString:detail.commentByUserName] || [detail.commentByUserId isEqualToString:@"0"])
     {
         commentStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:",detail.commentUserName] attributes:highlightDic];
         [commentStr appendAttributedString:contentStr];
@@ -83,12 +90,23 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    return [tableView fd_heightForCellWithIdentifier:identifyTable cacheByIndexPath:indexPath configuration:^(CommentTableViewCell *cell) {
-       
+    CGFloat height = [tableView fd_heightForCellWithIdentifier:identifyTable cacheByIndexPath:indexPath configuration:^(CommentTableViewCell *cell) {
+        
         [self configTableViewCell:cell indexpath:indexPath];
         
     }];
+    
+    return height + 10;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
 }
 
 
@@ -145,6 +163,16 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
     return 10;
+}
+
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section;
+{
+    return CGSizeZero;
+}
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+{
+    return CGSizeZero;
 }
 
 
