@@ -13,8 +13,10 @@
 #import "NSString+CP.h"
 #import "NSArray+CP.h"
 #import <UITableView+FDTemplateLayoutCell.h>
+#import "SDPhotoBrowser.h"
 
-@interface MKJFriendTableViewCell () <UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
+@interface MKJFriendTableViewCell () <UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SDPhotoBrowserDelegate>
+
 
 
 @end
@@ -30,6 +32,8 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
     self.desLabel.preferredMaxLayoutWidth = SCREEN_WIDTH - 90;
     self.nameLabel.preferredMaxLayoutWidth = SCREEN_WIDTH - 90;
     self.timeLabel.preferredMaxLayoutWidth = SCREEN_WIDTH - 90;
+    self.backPopView.layer.cornerRadius = 5.0f;
+    self.backPopView.layer.masksToBounds = YES;
     
     
     self.commentTableView.backgroundColor = [UIColor redColor];
@@ -44,7 +48,28 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
     
     [self.commentTableView registerNib:[UINib nibWithNibName:identifyTable bundle:nil] forCellReuseIdentifier:identifyTable];
     [self.collectionView registerNib:[UINib nibWithNibName:identifyCollection bundle:nil] forCellWithReuseIdentifier:identifyCollection];
+    
+    
+   
 }
+#pragma mark - 点击全文按钮
+- (IBAction)clickShowAll:(UIButton *)sender {
+    self.isExpand = !self.isExpand;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(clickShowAllDetails:expand:)]) {
+        [self.delegate clickShowAllDetails:self expand:self.isExpand];
+        
+    }
+}
+
+#pragma mark - 点击展开评论黑色浮层
+- (IBAction)clickShowComment:(UIButton *)sender {
+    self.isShowPopView = !self.isShowPopView;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(clickShowComment:isShow:)]) {
+        [self.delegate clickShowComment:self isShow:self.isShowPopView];
+    }
+}
+
 
 
 #pragma mark - tableView delegate
@@ -107,6 +132,13 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return CGFLOAT_MIN;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(clickColletionViewOrTableViewCallBack:)]) {
+        [self.delegate clickColletionViewOrTableViewCallBack:self];
+    }
 }
 
 
@@ -173,6 +205,33 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
 {
     return CGSizeZero;
+}
+
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(clickColletionViewOrTableViewCallBack:)]) {
+        [self.delegate clickColletionViewOrTableViewCallBack:self];
+    }
+    SDPhotoBrowser *photoBrowser = [SDPhotoBrowser new];
+    photoBrowser.delegate = self;
+    photoBrowser.currentImageIndex = indexPath.item;
+    photoBrowser.imageCount = self.imageDatasBig.count;
+    photoBrowser.sourceImagesContainerView = self.collectionView;
+    [photoBrowser show];
+}
+
+#pragma mark - SDPhotoBrowserDelegate
+
+- (NSURL *)photoBrowser:(SDPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
+{
+    NSString *urlString = self.imageDatasBig[index];
+    return [NSURL URLWithString:urlString];
+}
+- (UIImage *)photoBrowser:(SDPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index
+{
+    
+    return nil;
 }
 
 

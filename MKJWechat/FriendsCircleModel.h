@@ -32,6 +32,7 @@
 @property (nonatomic,assign) long long createDate;
 @property (nonatomic,copy) NSString *createDateStr;
 @property (nonatomic,copy) NSString *message; //!< 朋友圈发的文字
+@property (nonatomic,assign) BOOL isExpand; // 默认都是NO 
 @property (nonatomic,assign) NSInteger message_id;
 @property (nonatomic,copy) NSString *message_type; //!< text ext...
 @property (nonatomic,copy) NSString *objId;

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		69230BAB1DEAF7E1000E5A8A /* SDBrowserImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 69230BA51DEAF7E1000E5A8A /* SDBrowserImageView.m */; };
+		69230BAC1DEAF7E1000E5A8A /* SDPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 69230BA71DEAF7E1000E5A8A /* SDPhotoBrowser.m */; };
+		69230BAD1DEAF7E1000E5A8A /* SDWaitingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 69230BAA1DEAF7E1000E5A8A /* SDWaitingView.m */; };
 		B102860E1DE6D51500DBB703 /* data.json in Resources */ = {isa = PBXBuildFile; fileRef = B102860D1DE6D51500DBB703 /* data.json */; };
 		B10286101DE6D53400DBB703 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B102860F1DE6D53400DBB703 /* Settings.bundle */; };
 		B102861B1DE6FC1900DBB703 /* SettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B10286191DE6FC1900DBB703 /* SettingTableViewCell.m */; };
@@ -80,6 +83,13 @@
 /* Begin PBXFileReference section */
 		0C4C58428028950E043ADFED /* libPods-MKJWechat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MKJWechat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EE2E1B2B924268CF55CA7D0 /* Pods-MKJWechat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MKJWechat.release.xcconfig"; path = "Pods/Target Support Files/Pods-MKJWechat/Pods-MKJWechat.release.xcconfig"; sourceTree = "<group>"; };
+		69230BA41DEAF7E1000E5A8A /* SDBrowserImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDBrowserImageView.h; sourceTree = "<group>"; };
+		69230BA51DEAF7E1000E5A8A /* SDBrowserImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDBrowserImageView.m; sourceTree = "<group>"; };
+		69230BA61DEAF7E1000E5A8A /* SDPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDPhotoBrowser.h; sourceTree = "<group>"; };
+		69230BA71DEAF7E1000E5A8A /* SDPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDPhotoBrowser.m; sourceTree = "<group>"; };
+		69230BA81DEAF7E1000E5A8A /* SDPhotoBrowserConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDPhotoBrowserConfig.h; sourceTree = "<group>"; };
+		69230BA91DEAF7E1000E5A8A /* SDWaitingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWaitingView.h; sourceTree = "<group>"; };
+		69230BAA1DEAF7E1000E5A8A /* SDWaitingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWaitingView.m; sourceTree = "<group>"; };
 		79843E955E8308325BAD58A1 /* Pods-MKJWechat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MKJWechat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MKJWechat/Pods-MKJWechat.debug.xcconfig"; sourceTree = "<group>"; };
 		B102860D1DE6D51500DBB703 /* data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = data.json; sourceTree = "<group>"; };
 		B102860F1DE6D53400DBB703 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -201,6 +211,20 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		69230BA31DEAF7E1000E5A8A /* SDPhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				69230BA41DEAF7E1000E5A8A /* SDBrowserImageView.h */,
+				69230BA51DEAF7E1000E5A8A /* SDBrowserImageView.m */,
+				69230BA61DEAF7E1000E5A8A /* SDPhotoBrowser.h */,
+				69230BA71DEAF7E1000E5A8A /* SDPhotoBrowser.m */,
+				69230BA81DEAF7E1000E5A8A /* SDPhotoBrowserConfig.h */,
+				69230BA91DEAF7E1000E5A8A /* SDWaitingView.h */,
+				69230BAA1DEAF7E1000E5A8A /* SDWaitingView.m */,
+			);
+			path = SDPhotoBrowser;
+			sourceTree = "<group>";
+		};
 		B103C9D31D6550A700FB5747 /* 通讯录 */ = {
 			isa = PBXGroup;
 			children = (
@@ -264,6 +288,7 @@
 		B103C9E71D6556B800FB5747 /* tool */ = {
 			isa = PBXGroup;
 			children = (
+				69230BA31DEAF7E1000E5A8A /* SDPhotoBrowser */,
 				B103C9E81D65570600FB5747 /* MKJRequestHelp.h */,
 				B103C9E91D65570600FB5747 /* MKJRequestHelp.m */,
 				B137BC111DE8349000B17971 /* NSArray+CP.h */,
@@ -648,6 +673,7 @@
 				B137BBFD1DE7CAED00B17971 /* MainDiscoveryViewController.m in Sources */,
 				B103CA011D6583CF00FB5747 /* PinyinHelper.m in Sources */,
 				B136CA021D640AD00077ABF7 /* AppDelegate.m in Sources */,
+				69230BAD1DEAF7E1000E5A8A /* SDWaitingView.m in Sources */,
 				B137BC151DE8349000B17971 /* NSArray+CP.m in Sources */,
 				B103CA001D6583CF00FB5747 /* PinyinFormatter.m in Sources */,
 				B136CA4C1D64350C0077ABF7 /* MainTabBarController.m in Sources */,
@@ -659,6 +685,8 @@
 				B103C9FF1D6583CF00FB5747 /* NSString+PinYin4Cocoa.m in Sources */,
 				B103C9D71D6550C800FB5747 /* SearchResultController.m in Sources */,
 				B103C9FE1D6583CF00FB5747 /* HanyuPinyinOutputFormat.m in Sources */,
+				69230BAB1DEAF7E1000E5A8A /* SDBrowserImageView.m in Sources */,
+				69230BAC1DEAF7E1000E5A8A /* SDPhotoBrowser.m in Sources */,
 				B102861B1DE6FC1900DBB703 /* SettingTableViewCell.m in Sources */,
 				B137BC0A1DE8312800B17971 /* CommentTableViewCell.m in Sources */,
 				B136CA5A1D6443150077ABF7 /* DiscoveryViewController.m in Sources */,
