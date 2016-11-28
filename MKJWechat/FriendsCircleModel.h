@@ -43,6 +43,7 @@
 @property (nonatomic,strong) NSArray *messageBigPics; //!< 大图
 @property (nonatomic,strong) NSArray *messageSmallPics; //!< 小图
 @property (nonatomic,strong) NSMutableArray *commentMessages; //!< 评论数组
+@property (nonatomic,assign) BOOL hadClickLike; //!< 数据源的关系，一开始都默认没点赞
 
 
 @end

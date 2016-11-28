@@ -16,14 +16,25 @@
 // 点击展开评论和点赞浮层
 - (void)clickShowComment:(MKJFriendTableViewCell *)cell isShow:(BOOL)isShow;
 
-// collection和tableview的事件触发，也要同时收起View
+// collection和tableview的事件触发，也要同时收起View (tableView,这个方法给collectionView用)
 - (void)clickColletionViewOrTableViewCallBack:(MKJFriendTableViewCell *)cell;
+
+// 点击tableView里面的评论进行回调谈键盘
+- (void)clickTableViewCommentShowKeyboard:(MKJFriendTableViewCell *)cell tableViewIndex:(NSIndexPath *)currentIndexpath tableView:(UITableView *)tableView currentHeight:(CGFloat)currentHeight;
+
+// 点击浮层里面的评论回调
+- (void)clickPopCommnet:(MKJFriendTableViewCell *)cell;
+
+// 点击浮层里面的点赞回调
+- (void)clickLikeButton:(MKJFriendTableViewCell *)cell isLike:(BOOL)isLike;
 
 @end
 
 @interface MKJFriendTableViewCell : UITableViewCell
 
 @property (nonatomic,assign) id<MKJFriendTableCellDelegate>delegate;
+
+@property (nonatomic,assign) BOOL hadLikeActivityMessage;
 
 @property (weak, nonatomic) IBOutlet UIImageView *headerImageView; //!< 头像
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel; //!< 名字

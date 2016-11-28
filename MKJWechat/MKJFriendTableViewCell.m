@@ -82,6 +82,7 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
 {
     
     CommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifyTable forIndexPath:indexPath];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [self configTableViewCell:cell indexpath:indexPath];
     return cell;
     
@@ -98,7 +99,14 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
     // 回复楼主
     if ([NSString isEmptyString:detail.commentByUserName] || [detail.commentByUserId isEqualToString:@"0"])
     {
-        commentStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:",detail.commentUserName] attributes:highlightDic];
+        if (!self.hadLikeActivityMessage) {
+            commentStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:",detail.commentUserName] attributes:highlightDic];
+        }
+        else
+        {
+            commentStr = [[NSMutableAttributedString alloc] init];
+        }
+        
         [commentStr appendAttributedString:contentStr];
     }
     else // 回复评论的人 （楼中楼）
@@ -115,13 +123,12 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat height = [tableView fd_heightForCellWithIdentifier:identifyTable cacheByIndexPath:indexPath configuration:^(CommentTableViewCell *cell) {
-        
+    
+    CGFloat height = [tableView fd_heightForCellWithIdentifier:identifyTable configuration:^(id cell) {
         [self configTableViewCell:cell indexpath:indexPath];
-        
     }];
     
-    return height + 10;
+    return height + 15;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -136,8 +143,13 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(clickColletionViewOrTableViewCallBack:)]) {
-        [self.delegate clickColletionViewOrTableViewCallBack:self];
+    CGFloat height = [tableView fd_heightForCellWithIdentifier:identifyTable cacheByIndexPath:indexPath configuration:^(CommentTableViewCell *cell) {
+        
+        [self configTableViewCell:cell indexpath:indexPath];
+        
+    }];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(clickTableViewCommentShowKeyboard:tableViewIndex: tableView:currentHeight:)]) {
+        [self.delegate clickTableViewCommentShowKeyboard:self tableViewIndex:indexPath tableView:self.commentTableView currentHeight:height];
     }
 }
 
@@ -232,6 +244,35 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
 {
     
     return nil;
+}
+
+
+#pragma mark - 点赞和评论
+- (IBAction)likeButtonClick:(UIButton *)sender
+{
+    self.hadLikeActivityMessage = !self.hadLikeActivityMessage;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.likeButton.transform = CGAffineTransformMakeScale(1.5, 1.5);
+    } completion:^(BOOL finished) {
+        self.likeButton.transform = CGAffineTransformIdentity;
+        if (self.hadLikeActivityMessage) {
+            [self.likeButton setTitle:@"取消" forState:UIControlStateNormal];
+        }
+        else
+        {
+            [self.likeButton setTitle:@"赞" forState:UIControlStateNormal];
+        }
+        if (self.delegate && [self.delegate respondsToSelector:@selector(clickLikeButton:isLike:)]) {
+            [self.delegate clickLikeButton:self isLike:self.hadLikeActivityMessage];
+        }
+    }];
+}
+
+- (IBAction)commentButtonClick:(UIButton *)sender
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(clickPopCommnet:)]) {
+        [self.delegate clickPopCommnet:self];
+    }
 }
 
 

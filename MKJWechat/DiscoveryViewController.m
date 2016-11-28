@@ -14,13 +14,32 @@
 #import <UIImageView+WebCache.h>
 #import <UITableView+FDTemplateLayoutCell.h>
 #import "NSArray+CP.h"
+#import "ChatKeyBoard.h"
+#import "FaceSourceManager.h"
+#import "MLTransition.h"
+#import "CommentTableViewCell.h"
 
-@interface DiscoveryViewController () <UITableViewDelegate,UITableViewDataSource,MKJFriendTableCellDelegate,UIScrollViewDelegate>
+@interface DiscoveryViewController () <UITableViewDelegate,UITableViewDataSource,MKJFriendTableCellDelegate,UIScrollViewDelegate,ChatKeyBoardDelegate,ChatKeyBoardDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic,strong) NSMutableArray *friendsDatas;
 
 // 记录上一次点击的cell
 @property (nonatomic,strong) MKJFriendTableViewCell *lastTempCell;
+
+// 聊天键盘
+@property (nonatomic,strong) ChatKeyBoard *chatKeyBoard;
+
+// 记录点击cell或者comment在window中的Y偏移量
+@property (nonatomic,assign) CGFloat touch_offset_y;
+// 记录点击cell或者comment的高度
+@property (nonatomic,assign) CGFloat selectedCellHeight;
+// 点击commentcell中的当前model
+@property (nonatomic,strong) FriendCommentDetail *currentCommentDetail;
+// 是否点击cell弹键盘
+@property (nonatomic,assign) BOOL isResponseByCell;
+// 最外层朋友圈评论数组的cellindex
+@property (nonatomic,strong) NSIndexPath *parentCurrentIndexpath;
+
 
 @end
 
@@ -31,6 +50,7 @@ static NSString *identify = @"MKJFriendTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.view.disableMLTransition = YES;
     [self.tableView registerNib:[UINib nibWithNibName:identify bundle:nil] forCellReuseIdentifier:identify];
     self.tableView.tableFooterView = [UIView new];
     
@@ -39,8 +59,99 @@ static NSString *identify = @"MKJFriendTableViewCell";
     refreshHeader.lastUpdatedTimeLabel.hidden = YES;
     self.tableView.mj_header = refreshHeader;
     [self.tableView.mj_header beginRefreshing];
+    
+    //注册键盘出现NSNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification object:nil];
+    
+    
+    //注册键盘隐藏NSNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    
+    self.chatKeyBoard  = [ChatKeyBoard keyBoardWithNavgationBarTranslucent:YES];
+    self.chatKeyBoard = [ChatKeyBoard keyBoardWithParentViewBounds:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    self.chatKeyBoard.delegate = self;
+    self.chatKeyBoard.dataSource = self;
+    self.chatKeyBoard.placeHolder = @"你是猴子派来输入消息的么";
+    self.chatKeyBoard.keyBoardStyle = KeyBoardStyleComment;
+    self.chatKeyBoard.allowVoice = NO;
+    self.chatKeyBoard.allowSwitchBar = NO;
+    self.chatKeyBoard.allowMore = YES;
+    [self.view addSubview:self.chatKeyBoard];
+    [self.view bringSubviewToFront:self.chatKeyBoard];
 }
 
+
+#pragma mark - chatKeyboard代理方法
+#pragma mark -- ChatKeyBoardDataSource
+- (NSArray<MoreItem *> *)chatKeyBoardMorePanelItems
+{
+    MoreItem *item1 = [MoreItem moreItemWithPicName:@"sharemore_location" highLightPicName:nil itemName:@"位置"];
+    MoreItem *item2 = [MoreItem moreItemWithPicName:@"sharemore_pic" highLightPicName:nil itemName:@"图片"];
+    MoreItem *item3 = [MoreItem moreItemWithPicName:@"sharemore_video" highLightPicName:nil itemName:@"拍照"];
+    MoreItem *item4 = [MoreItem moreItemWithPicName:@"sharemore_location" highLightPicName:nil itemName:@"位置"];
+    MoreItem *item5 = [MoreItem moreItemWithPicName:@"sharemore_pic" highLightPicName:nil itemName:@"图片"];
+    MoreItem *item6 = [MoreItem moreItemWithPicName:@"sharemore_video" highLightPicName:nil itemName:@"拍照"];
+    MoreItem *item7 = [MoreItem moreItemWithPicName:@"sharemore_location" highLightPicName:nil itemName:@"位置"];
+    MoreItem *item8 = [MoreItem moreItemWithPicName:@"sharemore_pic" highLightPicName:nil itemName:@"图片"];
+    MoreItem *item9 = [MoreItem moreItemWithPicName:@"sharemore_video" highLightPicName:nil itemName:@"拍照"];
+    return @[item1, item2, item3, item4, item5, item6, item7, item8, item9];
+}
+- (NSArray<ChatToolBarItem *> *)chatKeyBoardToolbarItems
+{
+    ChatToolBarItem *item1 = [ChatToolBarItem barItemWithKind:kBarItemFace normal:@"face" high:@"face_HL" select:@"keyboard"];
+    
+    ChatToolBarItem *item2 = [ChatToolBarItem barItemWithKind:kBarItemVoice normal:@"voice" high:@"voice_HL" select:@"keyboard"];
+    
+    ChatToolBarItem *item3 = [ChatToolBarItem barItemWithKind:kBarItemMore normal:@"more_ios" high:@"more_ios_HL" select:nil];
+    
+    ChatToolBarItem *item4 = [ChatToolBarItem barItemWithKind:kBarItemSwitchBar normal:@"switchDown" high:nil select:nil];
+    
+    return @[item1, item2, item3, item4];
+}
+
+- (NSArray<FaceThemeModel *> *)chatKeyBoardFacePanelSubjectItems
+{
+    return [FaceSourceManager loadFaceSource];
+}
+
+
+
+
+#pragma mark - 键盘的代理 show or hidden
+- (void)keyboardWillShow:(NSNotification *)noti
+{
+    NSDictionary *userInfo = noti.userInfo;
+    CGFloat keyboardHeight = [[userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    CGFloat delta = 0;
+    CGFloat topOffsetKeyboard = 0;
+    if (self.isResponseByCell)
+    { // 是通过点击cell触发键盘
+        topOffsetKeyboard = [UIScreen mainScreen].bounds.size.height - keyboardHeight - kChatToolBarHeight - self.selectedCellHeight - 20;
+        
+    }
+    else // 点击comment触发
+    {
+        topOffsetKeyboard = [UIScreen mainScreen].bounds.size.height - keyboardHeight - kChatToolBarHeight - 30;
+    }
+    delta = self.touch_offset_y - topOffsetKeyboard;
+    
+    CGFloat contentOffset = self.tableView.contentOffset.y; // 这个指的是顶部tableView滚动的距离
+    contentOffset += delta; // delta + 下拉  -上拉
+    if (contentOffset <= -64) {
+        contentOffset = -64;
+    }
+    [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, contentOffset) animated:YES];
+}
+
+
+- (void)keyboardWillHide:(NSNotification *)noti
+{
+    
+}
 
 #pragma mark - 请求数据
 - (void)requestData
@@ -152,6 +263,16 @@ static NSString *identify = @"MKJFriendTableViewCell";
     cell.isShowPopView = NO;
     cell.backPopViewWidth.constant = 0;
     
+    // right action button inline like button state
+    if (issueInfo.hadClickLike) {
+        [cell.likeButton setTitle:@"取消" forState:UIControlStateNormal];
+    }
+    else
+    {
+        [cell.likeButton setTitle:@"赞" forState:UIControlStateNormal];
+    }
+    cell.hadLikeActivityMessage = issueInfo.hadClickLike; // 默认都是没有点赞
+    
     // commentTableView
     cell.commentdatas = [[NSMutableArray alloc] initWithArray:issueInfo.commentMessages];
     [cell.commentTableView reloadData];
@@ -160,8 +281,6 @@ static NSString *identify = @"MKJFriendTableViewCell";
     {
         recHeight = [cell.commentTableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:issueInfo.commentMessages.count - 1 inSection:0]];
     }
-    
-    
     cell.tableViewHeight.constant = recHeight.origin.y + recHeight.size.height;
 //    NSLog(@"%@,heightTable%f",indexpath,cell.tableViewHeight.constant);
 }
@@ -225,28 +344,151 @@ static NSString *identify = @"MKJFriendTableViewCell";
     
 }
 
-#pragma mark - 点击cel里面collection和tableview的触发时间回调
+#pragma mark - 点击cel里面collection和tableview的触发时间回调`
 - (void)clickColletionViewOrTableViewCallBack:(MKJFriendTableViewCell *)cell
 {
     [self dealLastAction];
 }
 
 
+#pragma mark - 点击commentTableView里面的一段段评论进行键盘弹起回调
+- (void)clickTableViewCommentShowKeyboard:(MKJFriendTableViewCell *)cell tableViewIndex:(NSIndexPath *)currentIndexpath tableView:(UITableView *)tableView currentHeight:(CGFloat)currentHeight
+{
+    NSIndexPath *waicengIndexpath = [self.tableView indexPathForCell:cell];
+    CommentTableViewCell *commentCell = [tableView cellForRowAtIndexPath:currentIndexpath];
+    CGRect rec = [commentCell.commentLabel convertRect:commentCell.commentLabel.bounds toView:[UIApplication sharedApplication].keyWindow];
+    self.touch_offset_y = rec.origin.y; // 点击那一栏的Y坐标
+    self.selectedCellHeight = currentHeight; // 点击那一栏的高度
+    self.isResponseByCell = YES; // 是cell激活键盘
+    self.currentCommentDetail = [self.friendsDatas[waicengIndexpath.row] commentMessages][currentIndexpath.row]; // 点击的是哪个commentmodel
+    self.parentCurrentIndexpath = waicengIndexpath; // 外侧cellindexpath
+    self.chatKeyBoard.placeHolder = [NSString stringWithFormat:@"回复:%@",self.currentCommentDetail.commentUserName]; // 楼中楼就是回复
+    [self.chatKeyBoard keyboardUpforComment];
+}
+
+#pragma mark -- 键盘更多
+- (void)chatKeyBoard:(ChatKeyBoard *)chatKeyBoard didSelectMorePanelItemIndex:(NSInteger)index
+{
+    NSString *message = [NSString stringWithFormat:@"选择的ItemIndex %zd", index];
+    UIAlertView *alertV = [[UIAlertView alloc] initWithTitle:@"ItemIndex" message:message delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+    [alertV show];
+}
+
+#pragma mark -- 键盘发送文本
+- (void)chatKeyBoardSendText:(NSString *)text
+{
+    
+    // 这里的text对应的是发送的文本
+    FriendCommentDetail *newComment = [[FriendCommentDetail alloc] init];
+    
+    if (self.isResponseByCell)
+    {
+        newComment.commentByPhoto = @"";
+        newComment.commentByUserId = self.currentCommentDetail ? self.currentCommentDetail.commentUserId : @"";
+        newComment.commentByUserName = self.currentCommentDetail ? self.currentCommentDetail.commentUserName :@"";
+        newComment.commentId = [NSString stringWithFormat:@"%d",arc4random() % 10 + 1];
+        newComment.commentPhoto = @"";
+        newComment.commentText = text;
+        newComment.commentUserId = @"12345678";
+        newComment.commentUserName = @"宓珂璟";
+        newComment.createDateStr = @"一万千以前";
+    }
+    else
+    {
+        newComment.commentByPhoto = @"";
+        newComment.commentByUserId = @"0";
+        newComment.commentByUserName = @"";
+        newComment.commentId = [NSString stringWithFormat:@"%d",arc4random() % 10 + 1];
+        newComment.commentPhoto = @"";
+        newComment.commentText = text;
+        newComment.commentUserId = @"12345678";
+        newComment.commentUserName = @"宓珂璟";
+        newComment.createDateStr = @"一万千以前";
+    }
+    
+    
+    NSMutableArray *comments = [self.friendsDatas[self.parentCurrentIndexpath.row] commentMessages];
+    [comments addObject:newComment];
+    [self.tableView reloadRowsAtIndexPaths:@[self.parentCurrentIndexpath] withRowAnimation:UITableViewRowAnimationFade];
+    [self.chatKeyBoard keyboardDownForComment];
+}
+
+
 #pragma mark - 点击评论进行评价
+- (void)clickPopCommnet:(MKJFriendTableViewCell *)cell
+{
+    NSIndexPath *waicengIndexpath = [self.tableView indexPathForCell:cell];
+    FriendIssueInfo *info = self.friendsDatas[waicengIndexpath.row];
+    CGRect rec = [cell.commentButton convertRect:cell.commentButton.bounds toView:[UIApplication sharedApplication].keyWindow];
+    self.touch_offset_y = rec.origin.y; // 点击那一栏的Y坐标
+    self.selectedCellHeight = 30; // 点击那一栏的高度
+    self.isResponseByCell = NO; // 是cell激活键盘
+    self.currentCommentDetail = nil;
+    self.parentCurrentIndexpath = waicengIndexpath; // 外侧cellindexpath
+    self.chatKeyBoard.placeHolder = [NSString stringWithFormat:@"评论:%@",info.userName]; // 评论
+    [self.chatKeyBoard keyboardUpforComment];
+    [self dealLastAction];
+}
 
 
 #pragma mark - 点赞
+- (void)clickLikeButton:(MKJFriendTableViewCell *)cell isLike:(BOOL)isLike
+{
+    NSIndexPath *waicengIndexpath = [self.tableView indexPathForCell:cell];
+    FriendIssueInfo *info = self.friendsDatas[waicengIndexpath.row];
+    info.hadClickLike = isLike;
+    self.parentCurrentIndexpath = waicengIndexpath; // 外侧cellindexpath
+    // 这里点赞就随便配置下了
+    FriendCommentDetail *newComment = [[FriendCommentDetail alloc] init];
 
+    newComment.commentByPhoto = @"";
+    newComment.commentByUserId = @"0";
+    newComment.commentByUserName = @"";
+    newComment.commentId = [NSString stringWithFormat:@"%d",arc4random() % 10 + 1];
+    newComment.commentPhoto = @"";
+    newComment.commentText = @"💖 宓珂璟";
+    newComment.commentUserId = @"12345678";
+    newComment.commentUserName = @"宓珂璟";
+    newComment.createDateStr = @"一万千以前";
+    
+    
+    
+    NSMutableArray *comments = [self.friendsDatas[self.parentCurrentIndexpath.row] commentMessages];
+    if (isLike) {
+        if ([NSArray isEmpty:comments])
+        {
+            [comments addObject:newComment];
+        }
+        else
+        {
+            [comments insertObject:newComment atIndex:0];
+        }
+    }
+    else
+    {
+        [comments removeObjectAtIndex:0];
+    }
+    
+    
+    [self.tableView reloadRowsAtIndexPaths:@[self.parentCurrentIndexpath] withRowAnimation:UITableViewRowAnimationFade];
+    [self dealLastAction];
+}
 
-#pragma mark - 点击底部评论进行评论
 
 
 #pragma mark - 滚动tableview的时候
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    NSLog(@"%lf",scrollView.contentOffset.y);
     [self dealLastAction];
 }
 
+
+#pragma mark - 将要被拽动的时候
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.chatKeyBoard keyboardDownForComment];
+}
 
 // 回收上次弹出的PopView
 - (void)dealLastAction

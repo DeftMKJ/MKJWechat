@@ -46,7 +46,7 @@
 
 
 
-//#import "ChatKeyBoardMacroDefine.h"
+#import "ChatKeyBoardMacroDefine.h"
 
 
 #endif /* WeChat_pch */
