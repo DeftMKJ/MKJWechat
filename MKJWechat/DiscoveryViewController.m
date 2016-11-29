@@ -28,6 +28,8 @@
 
 // 聊天键盘
 @property (nonatomic,strong) ChatKeyBoard *chatKeyBoard;
+// 判断键盘是否isShowing
+@property (nonatomic,assign) BOOL isKeyboardShowing;
 
 // 记录点击cell或者comment在window中的Y偏移量
 @property (nonatomic,assign) CGFloat touch_offset_y;
@@ -124,6 +126,7 @@ static NSString *identify = @"MKJFriendTableViewCell";
 #pragma mark - 键盘的代理 show or hidden
 - (void)keyboardWillShow:(NSNotification *)noti
 {
+    self.isKeyboardShowing = YES;
     NSDictionary *userInfo = noti.userInfo;
     CGFloat keyboardHeight = [[userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
     CGFloat delta = 0;
@@ -150,6 +153,7 @@ static NSString *identify = @"MKJFriendTableViewCell";
 
 - (void)keyboardWillHide:(NSNotification *)noti
 {
+    self.isKeyboardShowing = NO;
     
 }
 
@@ -312,6 +316,9 @@ static NSString *identify = @"MKJFriendTableViewCell";
 #pragma mark - 1.点击代理全文展开回调
 - (void)clickShowAllDetails:(MKJFriendTableViewCell *)cell expand:(BOOL)isExpand
 {
+    if (self.isKeyboardShowing) {
+        [self.chatKeyBoard keyboardDownForComment];
+    }
     [self dealLastAction];
     NSIndexPath *clickIndexPath = [self.tableView indexPathForCell:cell];
     FriendIssueInfo *issueInfo = self.friendsDatas[clickIndexPath.row];
@@ -324,6 +331,9 @@ static NSString *identify = @"MKJFriendTableViewCell";
 #pragma mark - 2.点击展开黑色浮层评论
 - (void)clickShowComment:(MKJFriendTableViewCell *)cell isShow:(BOOL)isShow
 {
+    if (self.isKeyboardShowing) {
+        [self.chatKeyBoard keyboardDownForComment];
+    }
     if (self.lastTempCell != cell) {
        [self dealLastAction];
     }
@@ -347,6 +357,9 @@ static NSString *identify = @"MKJFriendTableViewCell";
 #pragma mark - 点击cel里面collection和tableview的触发时间回调`
 - (void)clickColletionViewOrTableViewCallBack:(MKJFriendTableViewCell *)cell
 {
+    if (self.isKeyboardShowing) {
+        [self.chatKeyBoard keyboardDownForComment];
+    }
     [self dealLastAction];
 }
 
@@ -487,7 +500,10 @@ static NSString *identify = @"MKJFriendTableViewCell";
 #pragma mark - 将要被拽动的时候
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    [self.chatKeyBoard keyboardDownForComment];
+    if (self.isKeyboardShowing) {
+        [self.chatKeyBoard keyboardDownForComment];
+    }
+    
 }
 
 // 回收上次弹出的PopView

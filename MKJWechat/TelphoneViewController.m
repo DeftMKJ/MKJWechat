@@ -17,7 +17,7 @@
 
 //@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic,strong) UITableView *tableView;
-@property (nonatomic,strong) NSMutableArray *allFriends;
+@property (nonatomic,strong) NSMutableArray *allFriends; //!< 通讯录里面所有人集合数组
 @property (nonatomic,strong) NSMutableArray *filterFirends;
 @property (nonatomic,strong) UISearchController *searchController;
 @property (nonatomic,strong) SearchResultController *searchResult;
@@ -54,6 +54,12 @@ static NSString *identyfy1 = @"SearchFriendCell";
     [self.view addSubview:self.tableView];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = [UIView new];
+    
+    self.tableView.sectionIndexColor = [UIColor redColor];
+    self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
+    self.tableView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
+    
+    
     __weak typeof(self)weakSelf = self;
     self.searchResult = [[SearchResultController alloc] init];
     self.searchResult.block = ^{
@@ -68,7 +74,7 @@ static NSString *identyfy1 = @"SearchFriendCell";
     
     self.searchController.searchBar.showsCancelButton = NO;
     self.searchController.searchBar.returnKeyType = UIReturnKeySearch;
-    self.searchController.searchBar.backgroundColor = RGBA(191, 191, 191, 1);
+    self.searchController.searchBar.backgroundColor = RGBA(153, 153, 153, 1);
     self.searchController.searchBar.backgroundImage = [UIImage new];
     UITextField *searchBarTextField = [self.searchController.searchBar valueForKey:@"_searchField"];
     if (searchBarTextField)
@@ -172,7 +178,7 @@ static NSString *identyfy1 = @"SearchFriendCell";
 // 处理英文首字母
 - (void)handleFirstLetterArray
 {
-    // 拿到所有的key
+    // 拿到所有的key  字母
     NSMutableDictionary *letterDict = [[NSMutableDictionary alloc] init];
     for (FriendInfo *friend in self.allFriends) {
         HanyuPinyinOutputFormat *outputFormat=[[HanyuPinyinOutputFormat alloc] init];
@@ -183,9 +189,10 @@ static NSString *identyfy1 = @"SearchFriendCell";
         NSLog(@"%@",outputPinyin);
         [letterDict setObject:friend forKey:[[outputPinyin substringToIndex:1] uppercaseString]];
     }
+    // 字母数组
     self.letterArr = letterDict.allKeys;
     
-    // 让key进行排序
+    // 让key进行排序  A  -  Z
     self.letterArr = [[NSMutableArray alloc] initWithArray:[self.letterArr sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         // 大于上升，小于下降
         return [obj1 characterAtIndex:0] > [obj2 characterAtIndex:0];
@@ -208,6 +215,9 @@ static NSString *identyfy1 = @"SearchFriendCell";
             }
         }
         // 根据key装大字典
+        // A -- 一批通讯人
+        // B -- 一批人
+        // ...
         [self.nameDict setObject:nameArr forKey:letter];
     }
 }
@@ -228,14 +238,14 @@ static NSString *identyfy1 = @"SearchFriendCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    for(UIView *view in [tableView subviews])
-    {
-        if([[[view class] description] isEqualToString:@"UITableViewIndex"])
-        {
-            
-            [view setBackgroundColor:[UIColor redColor]];
-        }
-    }
+    // 右侧字母滑栏 有暴露的方法直接可以调用，不需要这样玩
+//    for(UIView *view in [tableView subviews])
+//    {
+//        if([[[view class] description] isEqualToString:@"UITableViewIndex"])
+//        {
+//            view.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.1];
+//        }
+//    }
 
     
     FriendInfo *info = [self.nameDict valueForKey:self.letterArr[indexPath.section]][indexPath.row];

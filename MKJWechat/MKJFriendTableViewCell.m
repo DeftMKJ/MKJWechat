@@ -36,15 +36,15 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
     self.backPopView.layer.masksToBounds = YES;
     
     
-    self.commentTableView.backgroundColor = [UIColor redColor];
+    self.commentTableView.backgroundColor = [UIColor whiteColor];
     self.commentTableView.delegate = self;
     self.commentTableView.dataSource = self;
     self.commentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    self.collectionView.backgroundColor = [UIColor greenColor];
+    self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    self.collectionView.alwaysBounceVertical = YES;
+//    self.collectionView.alwaysBounceVertical = YES;
     
     [self.commentTableView registerNib:[UINib nibWithNibName:identifyTable bundle:nil] forCellReuseIdentifier:identifyTable];
     [self.collectionView registerNib:[UINib nibWithNibName:identifyCollection bundle:nil] forCellWithReuseIdentifier:identifyCollection];
