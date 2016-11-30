@@ -60,6 +60,9 @@
 		B137BC101DE832B200B17971 /* CommentImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B137BC0E1DE832B200B17971 /* CommentImageCollectionViewCell.xib */; };
 		B137BC151DE8349000B17971 /* NSArray+CP.m in Sources */ = {isa = PBXBuildFile; fileRef = B137BC121DE8349000B17971 /* NSArray+CP.m */; };
 		B137BC161DE8349000B17971 /* NSString+CP.m in Sources */ = {isa = PBXBuildFile; fileRef = B137BC141DE8349000B17971 /* NSString+CP.m */; };
+		B156AB841DEED56D00016912 /* AnimationVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B156AB821DEED56D00016912 /* AnimationVideoViewController.m */; };
+		B156AB851DEED56D00016912 /* AnimationVideoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B156AB831DEED56D00016912 /* AnimationVideoViewController.xib */; };
+		B156AB871DEEDBD700016912 /* intro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B156AB861DEEDBD700016912 /* intro.mp4 */; };
 		B1702ADA1DEBD7D300AAB666 /* NSString+Emoji.m in Sources */ = {isa = PBXBuildFile; fileRef = B17029441DEBD7D200AAB666 /* NSString+Emoji.m */; };
 		B1702ADB1DEBD7D300AAB666 /* ChatKeyBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = B17029461DEBD7D200AAB666 /* ChatKeyBoard.m */; };
 		B1702ADC1DEBD7D300AAB666 /* Delete_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B170294A1DEBD7D200AAB666 /* Delete_ios7@2x.png */; };
@@ -446,6 +449,10 @@
 		B137BC121DE8349000B17971 /* NSArray+CP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+CP.m"; sourceTree = "<group>"; };
 		B137BC131DE8349000B17971 /* NSString+CP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+CP.h"; sourceTree = "<group>"; };
 		B137BC141DE8349000B17971 /* NSString+CP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+CP.m"; sourceTree = "<group>"; };
+		B156AB811DEED56D00016912 /* AnimationVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationVideoViewController.h; sourceTree = "<group>"; };
+		B156AB821DEED56D00016912 /* AnimationVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationVideoViewController.m; sourceTree = "<group>"; };
+		B156AB831DEED56D00016912 /* AnimationVideoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnimationVideoViewController.xib; sourceTree = "<group>"; };
+		B156AB861DEEDBD700016912 /* intro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = intro.mp4; sourceTree = "<group>"; };
 		B17029431DEBD7D200AAB666 /* NSString+Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Emoji.h"; sourceTree = "<group>"; };
 		B17029441DEBD7D200AAB666 /* NSString+Emoji.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Emoji.m"; sourceTree = "<group>"; };
 		B17029451DEBD7D200AAB666 /* ChatKeyBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatKeyBoard.h; sourceTree = "<group>"; };
@@ -804,6 +811,9 @@
 		B103C9D91D6550CE00FB5747 /* 首页消息 */ = {
 			isa = PBXGroup;
 			children = (
+				B156AB811DEED56D00016912 /* AnimationVideoViewController.h */,
+				B156AB821DEED56D00016912 /* AnimationVideoViewController.m */,
+				B156AB831DEED56D00016912 /* AnimationVideoViewController.xib */,
 				B136CA4D1D6442F70077ABF7 /* HomeViewController.h */,
 				B136CA4E1D6442F70077ABF7 /* HomeViewController.m */,
 				B136CA4F1D6442F70077ABF7 /* HomeViewController.xib */,
@@ -928,6 +938,7 @@
 				B136CA011D640AD00077ABF7 /* AppDelegate.m */,
 				B136CA061D640AD00077ABF7 /* Main.storyboard */,
 				B136CA0B1D640AD00077ABF7 /* LaunchScreen.storyboard */,
+				B156AB861DEEDBD700016912 /* intro.mp4 */,
 				B136C9FD1D640AD00077ABF7 /* Supporting Files */,
 			);
 			path = MKJWechat;
@@ -2517,6 +2528,7 @@
 				B1702BBF1DEBD7D300AAB666 /* f_static_098@2x.png in Resources */,
 				B1702BD41DEBD7D300AAB666 /* sharemore_pic@3x.png in Resources */,
 				B1702BBB1DEBD7D300AAB666 /* f_static_096@2x.png in Resources */,
+				B156AB871DEEDBD700016912 /* intro.mp4 in Resources */,
 				B1702BA61DEBD7D300AAB666 /* f_static_085@3x.png in Resources */,
 				B1702B491DEBD7D300AAB666 /* f_static_039@2x.png in Resources */,
 				B103C9E51D65543B00FB5747 /* Yuanti-SC-Bold.ttf in Resources */,
@@ -2636,6 +2648,7 @@
 				B1702AFE1DEBD7D300AAB666 /* f_static_002@2x.png in Resources */,
 				B1702B331DEBD7D300AAB666 /* f_static_028@2x.png in Resources */,
 				B1702AF41DEBD7D300AAB666 /* section0_emotion4@2x.png in Resources */,
+				B156AB851DEED56D00016912 /* AnimationVideoViewController.xib in Resources */,
 				B1702B7B1DEBD7D300AAB666 /* f_static_064@2x.png in Resources */,
 				B1702BD31DEBD7D300AAB666 /* sharemore_pic@2x.png in Resources */,
 				B1702BC31DEBD7D300AAB666 /* f_static_100@2x.png in Resources */,
@@ -2778,6 +2791,7 @@
 				B1702BE71DEBD7D300AAB666 /* OfficialAccountToolbar.m in Sources */,
 				B103C9E21D65536500FB5747 /* SearchFriendCell.m in Sources */,
 				B103C9EA1D65570600FB5747 /* MKJRequestHelp.m in Sources */,
+				B156AB841DEED56D00016912 /* AnimationVideoViewController.m in Sources */,
 				B1702BDA1DEBD7D300AAB666 /* FaceThemeModel.m in Sources */,
 				B103C9FD1D6583CF00FB5747 /* ChineseToPinyinResource.m in Sources */,
 			);

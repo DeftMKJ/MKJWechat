@@ -7,6 +7,7 @@ PODS:
   - SDWebImage (3.8.1):
     - SDWebImage/Core (= 3.8.1)
   - SDWebImage/Core (3.8.1)
+  - Shimmer (1.0.2)
   - UITableView+FDTemplateLayoutCell (1.4)
   - YYKit (1.0.7):
     - YYKit/no-arc (= 1.0.7)
@@ -19,6 +20,7 @@ DEPENDENCIES:
   - MJRefresh
   - Reveal-iOS-SDK
   - SDWebImage
+  - Shimmer
   - UITableView+FDTemplateLayoutCell
   - YYKit
 
@@ -29,9 +31,10 @@ SPEC CHECKSUMS:
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
+  Shimmer: c5374be1c2b0c9e292fb05b339a513cf291cac86
   UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
   YYKit: 843d1b26e20b82c695790c9a89907eaa1e99907f
 
-PODFILE CHECKSUM: 128b5d358db24dad618f535c7b30fa37c11b0d60
+PODFILE CHECKSUM: ec0287fa9303465ae4d6ad8b794f07ae16365571
 
 COCOAPODS: 1.0.1

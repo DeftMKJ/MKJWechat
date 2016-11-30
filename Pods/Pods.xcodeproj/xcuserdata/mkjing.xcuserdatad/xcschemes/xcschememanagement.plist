@@ -39,6 +39,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Shimmer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>UITableView+FDTemplateLayoutCell.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -52,7 +57,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0379786560213EED36BDADE2AE1D23C6</key>
+		<key>0C3D566C1FFA0DE3BD0594CBB6310338</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>285AC34CE215C7BC2F77F2BF31768DDA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -72,27 +82,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>832F9368193376C80806EADF9503F4C7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>9EAB3E42EF957541E6C3C76D35FD008E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B65E5827E8739887D46EC16C1BEAAE38</key>
+		<key>ACB0AFDD06BD34FE951DCCF62C802F09</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D5B87C736C42159F3A0D967122200995</key>
+		<key>BDD5C7B6CB540E0FB6E73C77EFD365E2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>F36C8A6C3BEB7DB64D64AD18A2CAC465</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F6D0E836D26E8D62F242D57984303671</key>
 		<dict>
 			<key>primary</key>
 			<true/>

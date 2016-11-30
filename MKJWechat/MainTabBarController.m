@@ -8,12 +8,15 @@
 
 #import "MainTabBarController.h"
 #import "MLTransition.h"
+#import "AnimationVideoViewController.h"
 #define kClassKey @"rootVCClass"
 #define kTitleKey @"titleName"
 #define kImageKey @"imageName"
 #define kSelectedImageKey @"selectedImage"
 
 @interface MainTabBarController ()
+
+
 
 @end
 
@@ -38,6 +41,12 @@ static MainTabBarController *rootVC;
 -(UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleDefault;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
 }
 
 - (void)viewDidLoad {
@@ -88,6 +97,9 @@ static MainTabBarController *rootVC;
 //    [self.tabBar setBarTintColor:RGBA(255, 194, 1, 1)];
     
 }
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
