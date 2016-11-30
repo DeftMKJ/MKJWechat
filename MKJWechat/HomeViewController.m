@@ -51,9 +51,6 @@
     [[[UIApplication sharedApplication] keyWindow] addSubview:self.animationVC.view];
     [[[UIApplication sharedApplication] keyWindow] bringSubviewToFront:self.animationVC.view];
     
-    
-    
-    
     [[NSUserDefaults standardUserDefaults] setValue:@(1) forKey:@"FIRST_ENTER_IN"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

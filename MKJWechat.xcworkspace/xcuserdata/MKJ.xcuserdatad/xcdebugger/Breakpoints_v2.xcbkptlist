@@ -6,22 +6,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MKJWechat/DiscoveryViewController.m"
-            timestampString = "501944076.09292"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
-            landmarkName = "-requestData"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -58,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MKJWechat/DiscoveryViewController.m"
-            timestampString = "501947077.443928"
+            timestampString = "502203257.572872"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "225"
-            endingLineNumber = "225"
-            landmarkName = "-clickShowComment:isShow:"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "-configCell:indexpath:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,13 +58,60 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MKJWechat/DiscoveryViewController.m"
-            timestampString = "501947890.591225"
+            timestampString = "502203257.572872"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
-            landmarkName = "-clickShowComment:isShow:"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
+            landmarkName = "-configCell:indexpath:"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__48-[DiscoveryViewController configCell:indexpath:]_block_invoke"
+                  moduleName = "MKJWechat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/MKJ/Desktop/MKJWechat/MKJWechat/DiscoveryViewController.m"
+                  timestampString = "502210515.390982"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "210"
+                  endingLineNumber = "210"
+                  offsetFromSymbolStart = "435">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__copy_helper_block_.179"
+                  moduleName = "MKJWechat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/MKJ/Desktop/MKJWechat/MKJWechat/DiscoveryViewController.m"
+                  timestampString = "502210515.393021"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "210"
+                  endingLineNumber = "210"
+                  offsetFromSymbolStart = "37">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__destroy_helper_block_.180"
+                  moduleName = "MKJWechat"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/MKJ/Desktop/MKJWechat/MKJWechat/DiscoveryViewController.m"
+                  timestampString = "502210515.395882"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "210"
+                  endingLineNumber = "210"
+                  offsetFromSymbolStart = "25">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

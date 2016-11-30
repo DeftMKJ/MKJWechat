@@ -19,6 +19,7 @@
 #import "MLTransition.h"
 #import "CommentTableViewCell.h"
 
+
 @interface DiscoveryViewController () <UITableViewDelegate,UITableViewDataSource,MKJFriendTableCellDelegate,UIScrollViewDelegate,ChatKeyBoardDelegate,ChatKeyBoardDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic,strong) NSMutableArray *friendsDatas;
@@ -192,7 +193,7 @@ static NSString *identify = @"MKJFriendTableViewCell";
 {
     __weak typeof(cell)weakCell = cell;
     FriendIssueInfo *issueInfo = self.friendsDatas[indexpath.row];
-    // headerImage
+    // headerImage 头像 实现渐隐效果
     [cell.headerImageView sd_setImageWithURL:[NSURL URLWithString:issueInfo.photo] placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
        
         if (image && cacheType == SDImageCacheTypeNone)
@@ -208,10 +209,10 @@ static NSString *identify = @"MKJFriendTableViewCell";
         }
     }];
     
-    // name
+    // name 名字
     cell.nameLabel.text = issueInfo.userName;
     
-    // description
+    // description 描述 根据配置在数据源的是否展开字段确定行数
     cell.desLabel.text = issueInfo.message;
     cell.isExpand = issueInfo.isExpand;
     if (issueInfo.isExpand)
@@ -224,7 +225,7 @@ static NSString *identify = @"MKJFriendTableViewCell";
         cell.desLabel.numberOfLines = 3;
     }
     
-    // 全文label
+    // 全文label 根据文字的高度是否展示全文lable  点击事件通过数据源来交互
     CGSize rec = [issueInfo.message boundingRectWithSize:CGSizeMake(SCREEN_WIDTH - 90, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont boldSystemFontOfSize:14]} context:nil].size;
     if (rec.height > 55) {
         cell.showAllDetailsButton.hidden = NO;
@@ -237,13 +238,15 @@ static NSString *identify = @"MKJFriendTableViewCell";
     }
 
     
-    // img
+    // img  九宫格图片，用collectionView做
     cell.imageDatas = [[NSMutableArray alloc] initWithArray:issueInfo.messageSmallPics];
     cell.imageDatasBig = [[NSMutableArray alloc] initWithArray:issueInfo.messageBigPics];
     [cell.collectionView reloadData];
+    // 这里可以用lauout来获取其高度，但是由于嵌套的关系，可能算不准，我们还是手动算好了
 //    [cell.collectionView layoutIfNeeded];
 //    cell.colletionViewHeight.constant = cell.collectionView.collectionViewLayout.collectionViewContentSize.height;
     CGFloat width = SCREEN_WIDTH - 90 - 20;
+    // 没图片就高度为0 （约束是可以拖出来的哦哦）
     if ([NSArray isEmpty:issueInfo.messageSmallPics])
     {
         cell.colletionViewHeight.constant = 0;
@@ -260,14 +263,14 @@ static NSString *identify = @"MKJFriendTableViewCell";
         }
     }
     
-    // timeStamp
+    // timeStamp  时间
     cell.timeLabel.text = issueInfo.timeTag;
     
-    // right action button
+    // right action button  弹出黑色点赞或者评论的框
     cell.isShowPopView = NO;
     cell.backPopViewWidth.constant = 0;
     
-    // right action button inline like button state
+    // right action button inline like button state   按钮状态也是根据数据源配置
     if (issueInfo.hadClickLike) {
         [cell.likeButton setTitle:@"取消" forState:UIControlStateNormal];
     }
@@ -277,7 +280,9 @@ static NSString *identify = @"MKJFriendTableViewCell";
     }
     cell.hadLikeActivityMessage = issueInfo.hadClickLike; // 默认都是没有点赞
     
-    // commentTableView
+    // commentTableView  评论的taibleView
+    // 这里的思路也是可以根据contentSize获取，但是貌似又可能算不准，我还是手动计算，思路就是
+    // 最后一个cell的Y轴坐标加上其高度就是算出来的高度啦
     cell.commentdatas = [[NSMutableArray alloc] initWithArray:issueInfo.commentMessages];
     [cell.commentTableView reloadData];
     CGRect recHeight = CGRectZero;
