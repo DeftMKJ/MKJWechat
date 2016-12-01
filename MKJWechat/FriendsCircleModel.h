@@ -62,5 +62,5 @@
 @property (nonatomic,copy) NSString *commentUserName; //!< 评论人的名字
 @property (nonatomic,assign) long long  createDate;
 @property (nonatomic,copy) NSString *createDateStr;
-
+@property (nonatomic,assign) BOOL isLike;
 @end

@@ -475,6 +475,7 @@ static NSString *identify = @"MKJFriendTableViewCell";
     newComment.commentUserId = @"12345678";
     newComment.commentUserName = @"宓珂璟";
     newComment.createDateStr = @"一万千以前";
+    newComment.isLike = info.hadClickLike;
     
     
     

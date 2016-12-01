@@ -99,7 +99,7 @@ static NSString *identifyCollection = @"CommentImageCollectionViewCell";
     // 回复楼主
     if ([NSString isEmptyString:detail.commentByUserName] || [detail.commentByUserId isEqualToString:@"0"])
     {
-        if (!self.hadLikeActivityMessage) {
+        if (!detail.isLike) {
             commentStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@:",detail.commentUserName] attributes:highlightDic];
         }
         else
