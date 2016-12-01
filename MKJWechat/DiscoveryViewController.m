@@ -50,6 +50,13 @@ static NSString *identify = @"MKJFriendTableViewCell";
 
 @implementation DiscoveryViewController
 
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    NSLog(@"dealloc--->%s",object_getClassName(self));
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
