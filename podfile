@@ -7,7 +7,6 @@ pod 'MJRefresh'
 pod 'SDWebImage'
 pod 'InAppSettingsKit'
 pod 'MJExtension'
-pod 'Shimmer'
 pod 'UITableView+FDTemplateLayoutCell'
+pod 'Shimmer'
 end
-
